@@ -1,0 +1,45 @@
+@import "variables.less";
+
+.blader {
+  display: flex;
+  background-color: #ffffff; /* Background color of the div */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.8); /* Horizontal offset, vertical offset, blur radius, and shadow color */
+}
+
+.blade {
+  border: 1px solid @sidebar-background;
+  width: 200px;
+  overflow: auto;
+  padding: 0px;
+  position: relative;
+  .blade__header {
+    height: 60PX;
+    background: rgb(255, 255, 255);
+    top: 0;
+    right: 0;
+    left: 0;
+    position: absolute;
+    
+    .blade__commands {
+ 
+      display: block;
+      float: right;
+    }
+  }
+  .blade__content {
+    background: rgb(253, 253, 253);
+    align-items: stretch;
+    position: absolute;
+    top:60px;
+    right: 0;
+    left : 0;
+  }
+}
+
+.blade--selected {
+  background-color: lighten(@sidebar-background, 70%);
+}
+
+.blade--wide {
+  width: 2000px;
+}
