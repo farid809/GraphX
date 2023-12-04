@@ -8,10 +8,12 @@ import { AppComponent } from './app.component';
 import { DemoComponentComponent } from './demo-component/demo-component.component';
 import { SidebarComponent, WorkspaceComponent } from './shared/index';
 import { RouterModule, PreloadAllModules, Route } from '@angular/router';
+
+
 import {
   HomeComponent,
   ListComponent,
-  DetailComponent,
+  GraphViewComponent,
   EntryComponent
 } from './components/index';
 import {
@@ -29,7 +31,7 @@ import {
     HomeComponent,
     EntryComponent,
     ListComponent,
-    DetailComponent
+    GraphViewComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,7 @@ import {
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'list', component: ListComponent },
-      { path: 'detail', component: DetailComponent },
+      { path: 'detail', component: GraphViewComponent },
       { path: 'lazy', loadChildren: () => import('./lazy/lazy.module').then(m => m.LazyModule) }
     ], { preloadingStrategy: PreloadAllModules })
   ],
@@ -55,6 +57,6 @@ export class AppModule {
   ) {
     this._bladeRegistry.register(new BladeMetaData('entry', EntryComponent));
     this._bladeRegistry.register(new BladeMetaData('list', ListComponent));
-    this._bladeRegistry.register(new BladeMetaData('detail', DetailComponent));
+    this._bladeRegistry.register(new BladeMetaData('detail', GraphViewComponent));
   }
 }

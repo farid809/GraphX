@@ -9,7 +9,9 @@ import {
   ViewContainerRef,
   ViewChild,
   HostListener,
-  ElementRef
+  ElementRef,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 
 import {
@@ -20,6 +22,8 @@ import {
   Blade
 } from './models';
 import { BladeManager } from './bladeManager.service';
+import { EntryComponent } from '../components';
+import { RefreshService } from '../refresh.service';
 
 @Component({
   selector: 'tw-blade',
@@ -32,16 +36,19 @@ import { BladeManager } from './bladeManager.service';
   <div class="blade__header" (click)="select()">
     <div class="blade__commands">
       <span *ngIf="canMinimize" (click)="changeState(1)">
-        <tw-icon name="window-minimize"></tw-icon>
+        <tw-icon name="minus"></tw-icon>
       </span>
+    
       <span *ngIf="canMaximize" (click)="changeState(2)">
-        <tw-icon name="window-restore"></tw-icon>
+        <tw-icon name="plus"></tw-icon>
       </span>
+
       <span *ngIf="canClose" (click)="close()">
-        <tw-icon name="window-close"></tw-icon>
+        <tw-icon name="x"></tw-icon>
       </span>
     </div>
-    <h3>{{ title }}</h3>
+    <h5>{{ title }}</h5>
+    
   </div>
   <div class="blade__content">
     <ng-template #bladeContent></ng-template>
@@ -50,7 +57,7 @@ import { BladeManager } from './bladeManager.service';
 export class BladeComponent implements OnInit, OnDestroy {
   private _componentRef: ComponentRef<any>;
   private _bladeState: BladeState = BladeState.default;
-
+  
   @Input()
   public context: BladeContext;
 
@@ -62,6 +69,10 @@ export class BladeComponent implements OnInit, OnDestroy {
 
   @Output()
   public closed: EventEmitter<BladeArgs> = new EventEmitter<BladeArgs>();
+
+  
+  @ViewChildren(EntryComponent)
+  private entryComponent: QueryList<EntryComponent>;
 
   public get id(): number {
     return this._componentRef.instance.id;
@@ -112,7 +123,8 @@ export class BladeComponent implements OnInit, OnDestroy {
 
   public constructor(
     private _mgr: BladeManager,
-    public element: ElementRef
+    public element: ElementRef,
+    private refreshService: RefreshService
   ) { }
 
   public ngOnInit(): void {
@@ -123,7 +135,10 @@ export class BladeComponent implements OnInit, OnDestroy {
 
       this._componentRef = this.bladeContent.createComponent<Blade>(this.context.metaData.component);
       this._componentRef.instance.id = this.context.id;
-
+      if(this._componentRef.instance.defaultState)
+      {
+        this.changeState(this._componentRef.instance.defaultState)
+      }
       this.setBladeStateIfAvailable();
 
       console.log(`initialized ${this.title} blade:`, this.context.id);
@@ -155,6 +170,9 @@ export class BladeComponent implements OnInit, OnDestroy {
     this._bladeState = state;
 
     this.stateChanged.next(this._bladeState);
+    //this.refreshService.triggerRefresh();
+
+
   }
 
   public close(): void {

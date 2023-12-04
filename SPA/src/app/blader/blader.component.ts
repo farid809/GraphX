@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+import { RefreshService } from '../refresh.service';
 import {
   Component,
   Injectable,
@@ -8,7 +8,9 @@ import {
   OnDestroy,
   ViewChildren,
   QueryList,
-  Input
+  Input,
+  AfterViewInit,
+  ViewChild
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -19,6 +21,9 @@ import {
 } from './models';
 import { BladeManager } from './bladeManager.service';
 import { BladeComponent } from './blade.component';
+import { DemoComponentComponent } from '../demo-component/demo-component.component';
+
+
 
 @Component({
   selector: 'tw-blader',
@@ -37,9 +42,10 @@ import { BladeComponent } from './blade.component';
     (closed)="closed($event)">
   </tw-blade>`
 })
-export class BladerComponent implements OnInit, OnDestroy {
+export class BladerComponent implements OnInit, OnDestroy, AfterViewInit {
   private _entryComponentId: number;
   private _unsubscribe: Subject<any> = new Subject<any>();
+
 
   @ViewChildren(BladeComponent)
   private _blades: QueryList<BladeComponent>;
@@ -53,8 +59,14 @@ export class BladerComponent implements OnInit, OnDestroy {
 
   public constructor(
     private _route: ActivatedRoute,
-    private _mgr: BladeManager
+    private _mgr: BladeManager,
+    private refreshService: RefreshService
   ) { }
+
+
+  ngAfterViewInit(): void {
+   
+  }
 
   public ngOnInit(): void {
     this._route.params
@@ -87,10 +99,17 @@ export class BladerComponent implements OnInit, OnDestroy {
   public stateChanged(state: BladeState): void {
     if (this._mgr.selected) {
       console.log(`state of blade ${this._mgr.selected.metaData.key} changed: ${state}`);
+ 
+
     }
 
+ 
+
     this.scrollIntoView();
+   
   }
+
+
 
   public selectBlade(args: BladeArgs): void {
     if (this._mgr.selected
@@ -132,7 +151,9 @@ export class BladerComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.refreshService.triggerRefresh();
   }
+
 }
 
 @Injectable()

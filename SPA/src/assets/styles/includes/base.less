@@ -4,9 +4,23 @@ body {
 	font-family: sans-serif;
 }
 
-.body {
+.header {
   position: absolute;
 	top: 0px;
+  height: 70px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+  background-color: black;
+  color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.8);
+
+}
+
+.body {
+  position: absolute;
+	top: 40px;
 	right: 0;
 	bottom: 0;
 	left: 0;
@@ -19,14 +33,15 @@ body {
 
   .sidebar-header,
   .sidebar-footer {
-    padding: 6px 20px;
+    padding: 0px 0px;
     font-size: .8em;
     font-weight: bold;
     min-height: 40px;
   }
 
   .sidebar-content {
-    padding: 6px 20px;
+    padding: 0px 0px;
+    color:rgba(255, 255, 255, 0.8)
   }
 }
 
@@ -45,8 +60,22 @@ body {
     font-size: .8em;
   }
 
+  
+
   .content {
     padding: 0px 0px;
     background: #fff;
   }
+}
+
+ /* Style for active panel button */
+ .active-panel {
+  background-color: rgb(1, 1, 1);
+  color: #ffffff; /* Adjust text color as needed */
+}
+
+.panel-content {
+  width: 100%;
+  padding: 15px;
+  /* ... */
 }

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import $ from 'jquery';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 
+import { RefreshService } from '../refresh.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-demo-component',
   templateUrl: './demo-component.component.html',
   styleUrl: './demo-component.component.less'
 })
-export class DemoComponentComponent implements OnInit {
+export class DemoComponentComponent implements OnInit, AfterViewInit {
   
   editorOptions = {theme: 'vs-dark', language: 'json'};
   code: string= 'function x() {\nconsole.log("Hello world!");\n}';
@@ -19,23 +21,52 @@ export class DemoComponentComponent implements OnInit {
   private defaults: any;
   private layout: any;
 
+  private refreshSubscription: Subscription;
 
+
+  constructor(private refreshService: RefreshService) {
+    this.refreshSubscription=this.refreshService.getRefreshObservable().subscribe(()=>{
+      setTimeout(()=>{
+        this.refresh();
+    
+      
+      },1)
+     
+
+    });
+  }
+
+  ngOnInit(): void {
+    this.demoJquery();
+    this.demoCytoscape();
+    // Access the component tree and display it
+   
+   }
+
+
+   ngAfterViewInit(): void {
+  
+  }
 
   onEditorInit(editor: monaco.editor.IStandaloneCodeEditor) {
     this.monacoEditor = editor;
   }
   
-  ngOnInit(): void {
-   this.demoJquery();
-   this.demoCytoscape();
-  }
+ 
 
   demoJquery()
   {
-    $('button').click( evt=>{
-      alert('Hello world from Jquery button');
-      console.log(evt);
-    })
+    // $('button').click( evt=>{
+    //   alert('Hello world from Jquery button');
+    //   console.log(evt);
+    // })
+  }
+
+  refresh() {
+   
+      this.monacoEditor.layout();
+      this.demoCytoscape();
+  
   }
 
   public graph: any = {
@@ -256,14 +287,14 @@ export class DemoComponentComponent implements OnInit {
       stop: function () { } // on layoutstop
     };
 
-    let layout = this.cy.layout(defaults
+    this.layout = this.cy.layout(defaults
     )
     // let layout=this.cy.layout();
      //this.cy.minZoom(0.5);
      this.cy.maxZoom(3);
      this.cy.zoom();
 
-    layout.run();
+    this.layout.run();
 
 
   }

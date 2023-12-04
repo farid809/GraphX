@@ -1,0 +1,27 @@
+<div class="container" >
+    <div class="d-flex justify-content-end" style="height:60px; background-color: rgb(255, 254, 254)">
+        <button class="flat-button" (click)="togglePopup()" > <i class="fas fa-play fa-2xl text-success"></i> <!-- FontAwesome icon for Explorer --></button>
+    </div>
+    <div style="height:20px; background-color: rgb(255, 255, 255)"></div>
+    <div  id="cy-container" class=" alert " role="alert">
+        <div id="cy"></div>
+    </div>
+
+   
+
+  </div>
+
+
+
+<p>Context ID: {{ id }}</p>
+<h4>Arguments</h4>
+<p>ViewDefId: {{ viewDefId }}</p>
+<p>ObjKey: {{ objKey }}</p>
+<p (click)="newTitle()">{{ title }} <-- click to change</p>
+        <p>
+            <button type="button" *ngIf="isDirty" (click)="cancel()">Cancel changes</button>
+        </p>
+        <p>
+            <input type="text" #goto placeholder="enter id of blade..." />
+            <button (click)="select(goto.value)">go to</button>
+        </p>

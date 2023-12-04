@@ -1,0 +1,29 @@
+<!-- Column for Panels -->
+
+
+<div class="col bg-light min-vh-100">
+
+    <div class="panel-content" [class.d-none]="currentPanel !== 'explorer'">
+        <div class="d-flex justify-content-end" style="height:60px; background-color: rgb(255, 254, 254)">
+            <button class="flat-button " (click)="renderGraph('detail')"> <i class="fas fa-play fa-2xl text-success"></i> <!-- FontAwesome icon for Explorer --></button>
+        </div>
+        <div style="height:20px; background-color: rgb(255, 255, 255)"></div>
+        <!-- <button (click)="renderGraph()"> <i class="fas fa-play fa-2xl text-success"></i> -->
+        <!--<button (click)="toggleRightPanel()">Toggle Right</button>-->
+        <ngx-monaco-editor class="monaco-editor" [options]="editorOptions" [(ngModel)]="code" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
+       
+    </div>
+    <div class="panel-content" [class.d-none]="currentPanel !== 'search'">
+        <!-- Content for Search -->
+        <p>Search content here...</p>
+    </div>
+</div>
+
+
+<ul>
+    <li (click)="clicked('list')">List</li>
+    <li (click)="clicked('detail')">Detail</li>
+    <li (click)="clicked('lazy')">Lazy</li>
+
+
+</ul>

@@ -4,8 +4,9 @@ import { Component } from '@angular/core';
   selector: 'tw-workspace',
   host: { 'class': 'main' },
   template: `
+ 
   <div class="content">
-    <router-outlet></router-outlet>
+    <router-outlet  ></router-outlet>
   </div>
 `
 })

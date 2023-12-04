@@ -18,12 +18,12 @@
  <br>
  <br>
 
-  <div class="container">
+  <div  class="container">
     <h1>Monacocode Demo</h1>
-    <div class="alert alert-primary" role="alert">
-        <ngx-monaco-editor   class="monaco-editor-container"  [options]="editorOptions" [(ngModel)]="code" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
+    <div  class=" alert alert-primary" role="alert">
+        <ngx-monaco-editor  [options]="editorOptions" [(ngModel)]="code" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
     </div>
-    <button class="btn btn-primary">Run Code</button>
+    <button class="btn btn-primary" (click)="refresh()">refreshLayout</button>
   </div>
 
   <br>
@@ -35,10 +35,12 @@
 
   <div class="container" >
     <h1>Cytoscape Demo</h1>
-    <div id="cy-container" class="alert alert-primary" role="alert">
+    <div  id="cy-container" class=" alert alert-primary" role="alert">
         <div id="cy"></div>
     </div>
 
   </div>
+
+
 
 

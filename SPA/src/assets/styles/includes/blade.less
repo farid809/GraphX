@@ -4,21 +4,31 @@
   display: flex;
   background-color: #ffffff; /* Background color of the div */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.8); /* Horizontal offset, vertical offset, blur radius, and shadow color */
+
+}
+
+.top-header {
+  height: 30px;
+  background: black;
+  position: relative;
 }
 
 .blade {
   border: 1px solid @sidebar-background;
-  width: 200px;
-  overflow: auto;
+  width: 400px;
+  overflow: hidden;
   padding: 0px;
   position: relative;
+
+
   .blade__header {
-    height: 60PX;
-    background: rgb(255, 255, 255);
+    height: 30px;
+    background: rgb(124, 124, 124);
     top: 0;
     right: 0;
     left: 0;
     position: absolute;
+    color: white;
     
     .blade__commands {
  
@@ -30,7 +40,7 @@
     background: rgb(253, 253, 253);
     align-items: stretch;
     position: absolute;
-    top:60px;
+    top:30px;
     right: 0;
     left : 0;
   }
@@ -41,5 +51,6 @@
 }
 
 .blade--wide {
-  width: 2000px;
+  width: 1500px;
+
 }

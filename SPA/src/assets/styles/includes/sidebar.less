@@ -1,10 +1,54 @@
 .sidebar {
+
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.5);
+
+
   .sidebar-header a { 
     color: whitesmoke;
     text-decoration: none;
+   
   }
   .sidebar-nav a {
     color: whitesmoke;
     text-decoration: none;
+
   }
+}
+
+
+
+
+.flat-button {
+  background-color: #ffffff; /* VS Code blue color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.flat-button:hover {
+  background-color: #eaeaea; /* Slightly darker blue on hover */
+}
+
+  /* Active (clicked) state */
+  .flat-button:active {
+    background-color: #ddd; /* Background color when clicked */
+    color: #333; /* Text color when clicked */
+    border-color: rgb(190, 190, 190); /* Border color when clicked */
+  }
+.bg-dark .btn.active-panel {
+  color: white; /* Text color for active button */
+}
+
+.bg-dark .btn:not(.active-panel) {
+  color: grey; /* Text color for inactive button */
 }
