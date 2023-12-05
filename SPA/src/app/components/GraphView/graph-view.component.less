@@ -24,3 +24,33 @@
     left: 0;
   }
 
+  .highlighted-node {
+    background-color: yellow; /* Change to your desired highlight color */
+    border-color: red; /* Change to your desired highlight color */
+  }
+
+  /* Custom CSS for the collapsible panel */
+.collapsible-panel {
+    position: fixed;
+    top: 0;
+    right: -250px; /* Adjust as needed */
+    width: 250px;
+    height: 100%;
+    background-color: #f8f9fa; /* Background color for the panel */
+    padding: 20px;
+    transition: right 0.3s ease-in-out;
+  }
+  
+  /* Add a shadow to the panel */
+  .collapsible-panel.shadow {
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Set the Monaco Editor to 100% width and height */
+.monaco-editor {
+    width: 100%;
+    min-height: 80vh;
+  }
+  
+  
+   

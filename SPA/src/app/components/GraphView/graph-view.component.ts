@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
+import ctxmenu from 'cytoscape-cxtmenu';
 import  jsonPath from 'jsonpath';
 import { RefreshService } from '../../refresh.service';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,7 @@ export class GraphViewComponent implements Blade, OnInit {
   private options: any;
   private defaults: any;
   private layout: any;
+  private ctxmenu: any;
   public defaultState: any= 2;
 
   private refreshSubscription: Subscription;
@@ -36,6 +38,13 @@ export class GraphViewComponent implements Blade, OnInit {
   public graph: any;
 
   showPopup = false;
+
+  isPanelOpen = true;
+
+  private monacoEditor: monaco.editor.IStandaloneCodeEditor;
+  editorOptions = { theme: 'vs-light', language: 'json' };
+  code: string = '';
+
 
   public constructor(
     private _mgr: BladeManager,
@@ -69,6 +78,11 @@ export class GraphViewComponent implements Blade, OnInit {
   togglePopup() {
 
   }
+
+  togglePanel() {
+    this.isPanelOpen = !this.isPanelOpen;
+  }
+
 
   refresh() {
 
@@ -153,7 +167,7 @@ export class GraphViewComponent implements Blade, OnInit {
   demoCytoscape(): void {
 
     cytoscape.use(dagre);
-
+    cytoscape.use(ctxmenu);
     
     this.cy = cytoscape({
       container: document.getElementById('cy'),
@@ -415,7 +429,8 @@ export class GraphViewComponent implements Blade, OnInit {
     //  console.log('Clicked node:' , node.data());
 
       // You can do more here, like showing details of the node or triggering Angular-specific logic
-      console.log(node)
+
+      
     });
     this.layout = this.cy.layout(this.defaults);
     // let layout=this.cy.layout();
@@ -489,7 +504,44 @@ export class GraphViewComponent implements Blade, OnInit {
 // }); 
 
 
+    this.cy.cxtmenu({
+      selector: 'node, edge',
+      outsideMenuCancel: 10,
+      commands: [
+        {
+          content: '<span class="fa fa-flash fa-2x"></span>',
+          select: function(ele){
+            console.log( ele.id() );
+          }
+        },
+
+        {
+          content: '<span class="fa fa-star fa-2x"></span>',
+          select: function(ele){
+            console.log( ele.data('name') );
+          },
+          enabled: false
+        },
+
+        {
+          content: 'Node Details',
+          select: (ele)=>{
+            let node=ele;
+            
+            this.code=JSON.stringify(node.data().original,null, 2)
+            this.monacoEditor.layout();
+            console.log(node.data().original)
+
+
+
+          }
+        }
+      ]
+    });
+
+
     this.layout.run();
+
 
 
  //this.cy.fit( this.cy.$('#root'));
@@ -510,6 +562,7 @@ export class GraphViewComponent implements Blade, OnInit {
 
   refreshLayout(){
     this.layout.run();
+  
   }
 
   // demoCytoscape() {
@@ -643,5 +696,13 @@ export class GraphViewComponent implements Blade, OnInit {
 
 
   // }
-  
+  onEditorInit(editor: monaco.editor.IStandaloneCodeEditor) {
+    this.monacoEditor = editor;
+    setTimeout(() => {
+      this.monacoEditor.layout();
+
+
+    }, 1);
+  }
+ 
 }

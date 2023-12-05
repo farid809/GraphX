@@ -21,6 +21,7 @@ import {
   BladeRegistry,
   BladeMetaData
 } from './blader/index';
+import { DetailViewComponent } from './components/DetailView/detail-view.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {
     HomeComponent,
     EntryComponent,
     ListComponent,
-    GraphViewComponent
+    GraphViewComponent,
+    DetailViewComponent
   ],
   imports: [
     BrowserModule,
@@ -58,5 +60,6 @@ export class AppModule {
     this._bladeRegistry.register(new BladeMetaData('entry', EntryComponent));
     this._bladeRegistry.register(new BladeMetaData('list', ListComponent));
     this._bladeRegistry.register(new BladeMetaData('detail', GraphViewComponent));
+    this._bladeRegistry.register(new BladeMetaData('detailView', DetailViewComponent));
   }
 }
