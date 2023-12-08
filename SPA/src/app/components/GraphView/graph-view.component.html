@@ -6,8 +6,10 @@
       <div class="col-md-9 main-content">
         <div class="container" >
             <div class="d-flex justify-content-end" style="height:60px; background-color: rgb(255, 254, 254)">
-                <button class="flat-button" (click)="togglePanel()" > <i class="fas fa-target fa-2xl text-success"></i> <!-- FontAwesome icon for Explorer --></button>
+                <button class="flat-button" (click)="refreshGraphLayout()" > <i class="fas fa-arrow-up-right-dots fa-2xl text-success"></i> <!-- FontAwesome icon for Explorer --></button>
             </div>
+            <input [(ngModel)]="graphSearchText" (input)="filterAndHighlightPaths()" placeholder="Search...">
+
             <div style="height:20px; background-color: rgb(255, 255, 255)"></div>
             <div  id="cy-container" class=" alert " role="alert">
                 <div id="cy"></div>
@@ -24,7 +26,7 @@
         
         <!-- Content for the collapsible panel -->
         <h4>Node Details </h4>
-        <ngx-monaco-editor class="monaco-editor" [options]="editorOptions" [(ngModel)]="code" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
+        <ngx-monaco-editor  class="monaco-editor" [options]="editorOptions" [(ngModel)]="code" (onInit)="onEditorInit($event)"></ngx-monaco-editor>
       </div>
     </div>
     

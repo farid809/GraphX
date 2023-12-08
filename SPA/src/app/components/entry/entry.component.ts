@@ -20,6 +20,7 @@ import { MockService } from '../../mock.service';
 })
 export class EntryComponent implements Blade, OnInit, AfterViewInit {
   public id: number;
+  public targetGraphViewId: number;
   public title = 'Data {}';
   public isDirty = false;
 
@@ -76,8 +77,10 @@ export class EntryComponent implements Blade, OnInit, AfterViewInit {
     console.log("render graph")
 
    
-    this.graphService.setJsonData(this.code)
+  
     this.clicked(key)
+    this.graphService.setJsonData(this.code)
+    this._mgr.select(this.targetGraphViewId);
   }
 
   refresh() {
@@ -88,17 +91,21 @@ export class EntryComponent implements Blade, OnInit, AfterViewInit {
   }
 
   public clicked(key: string): void {
+
+    if(!this._mgr.exists(this.targetGraphViewId)){
+    this._mgr.reset();
+    
     if (key === 'list') {
-      this._mgr.addWithParams({
+     this.targetGraphViewId= this._mgr.addWithParams({
         key,
         params: [
           { key: 'viewDefId', value: 'ProductListViewDef' }
         ]
       });
     } else if (key === 'lazy') {
-      this._mgr.addWithParams({ key });
+     this.targetGraphViewId= this._mgr.addWithParams({ key });
     } else {
-      this._mgr.addWithParams({
+     this.targetGraphViewId= this._mgr.addWithParams({
         key,
         params: [
           { key: 'viewDefId', value: 'ProductViewDef' },
@@ -106,6 +113,16 @@ export class EntryComponent implements Blade, OnInit, AfterViewInit {
         ]
       });
     }
+  }
+  
+  setTimeout(()=>{
+    this._mgr.select(this.targetGraphViewId);
+    this._mgr.select(this.targetGraphViewId);
+  },20)
+    
+  
+
+  
   }
 
 

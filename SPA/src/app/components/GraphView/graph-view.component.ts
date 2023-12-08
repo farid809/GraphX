@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import cytoscape from 'cytoscape';
 import dagre from 'cytoscape-dagre';
 import ctxmenu from 'cytoscape-cxtmenu';
 import  jsonPath from 'jsonpath';
 import { RefreshService } from '../../refresh.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import {
   Blade,
   BladeManager
 } from '../../blader/index';
 import { GraphService } from '../../graph.service';
+
 
 @Component({
   selector: 'tw-detail',
@@ -18,7 +19,7 @@ import { GraphService } from '../../graph.service';
 
 })
 export class GraphViewComponent implements Blade, OnInit {
-  public id: number;
+  public id: number = 0;
   public title = 'Graph View';
   public isDirty = false;
 
@@ -42,9 +43,13 @@ export class GraphViewComponent implements Blade, OnInit {
   isPanelOpen = true;
 
   private monacoEditor: monaco.editor.IStandaloneCodeEditor;
+
+
   editorOptions = { theme: 'vs-light', language: 'json' };
   code: string = '';
 
+
+  graphSearchText: String='';
 
   public constructor(
     private _mgr: BladeManager,
@@ -164,6 +169,67 @@ export class GraphViewComponent implements Blade, OnInit {
       }
     }
   ];
+
+  filterAndHighlightPaths() {
+    // Clear any previous highlights and show all nodes
+    this.cy.elements().removeClass('highlighted hidden');
+
+    // Search for nodes containing the specified text in their 'text' data field
+    const matchingNodes = this.cy.nodes().filter(node => {
+      return JSON.stringify(node.data()).toLowerCase().includes(this.graphSearchText.toLowerCase());
+
+    });
+
+    // Highlight the path from the root node to each matching node
+    matchingNodes.forEach(matchingNode => {
+      const path = this.cy.elements().aStar({
+        root: '#root', // Replace with the ID of your root node
+        goal: matchingNode,
+        directed: true
+      });
+
+      if (path.found) {
+        path.path.addClass('highlighted');
+      }
+    });
+
+    const filteredLayout = this.cy.elements('.highlighted').layout(this.defaults);
+
+    filteredLayout.run();
+
+    // Hide nodes that are not in the path
+    this.cy.nodes().not('.highlighted').addClass('hidden');
+  }
+
+  refreshGraphLayout(){
+    this.layout.run();
+  }
+
+    // Function to filter and highlight nodes based on the search text
+    filterAndHighlightNodes() {
+      if(this.graphSearchText)
+      {
+      const nodesToHighlight = this.cy.nodes().filter(node => {
+        return JSON.stringify(node.data()).toLowerCase().includes(this.graphSearchText.toLowerCase());
+
+      });
+  
+
+      console.log(nodesToHighlight)
+      // Remove any previous highlights
+      this.cy.nodes().removeClass('highlighted');
+  
+      // Add the 'highlighted' class to nodes that match the search text
+      nodesToHighlight.addClass('highlighted');
+
+    //  this.layout.run();
+      }
+      else{
+        this.cy.nodes().removeClass('highlighted');
+      }
+    }
+
+
   demoCytoscape(): void {
 
     cytoscape.use(dagre);
@@ -329,6 +395,12 @@ export class GraphViewComponent implements Blade, OnInit {
           "style": {
             "text-valign": "bottom",
             "text-halign": "center"
+          }
+        },
+        {
+          "selector": ".highlighted",
+          "style": {
+            "background-color": "#33A7FF"
           }
         },
         {
